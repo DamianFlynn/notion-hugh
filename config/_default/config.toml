@@ -1,4 +1,4 @@
-baseURL = "https://sample.damianflynn.com/"
+baseURL = "https://damianflynn.github.io/notion-hugh"  
 languageCode = "en-us"
 title = "My New Hugo Site"
 theme = "DoIt"
