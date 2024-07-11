@@ -2,3 +2,5 @@
 # https://gohugo.io/content-management/urls/#permalinks-configuration-example
 '/' = ":title"
 posts = ":sections/:title"
+# posts = ":year/:month/:filename"
+# posts = ":filename"

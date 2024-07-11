@@ -1,0 +1,151 @@
+  # Comment config
+  [page.comment]
+    enable = false
+    # Disqus comment config (https://disqus.com/)
+
+    [page.comment.disqus]
+      enable = false
+      # Disqus shortname to use Disqus in posts
+      shortname = ""
+
+    # Gitalk comment config (https://github.com/gitalk/gitalk)
+    [page.comment.gitalk]
+      enable = false
+      owner = ""
+      repo = ""
+      clientId = ""
+      clientSecret = ""
+
+    # Valine comment config (https://github.com/xCss/Valine)
+    [page.comment.valine]
+      enable = false
+      appId = ""
+      appKey = ""
+      placeholder = ""
+      avatar = "mp"
+      meta= ""
+      pageSize = 10
+      lang = "en"
+      visitor = true
+      recordIP = false
+      highlight = true
+      enableQQ = false
+      serverURLs = ""
+      # emoji data file name, default is "google.yml"
+      # ("apple.yml", "google.yml", "facebook.yml", "twitter.yml")
+      # located in "themes/DoIt/assets/data/emoji/" directory
+      # you can store your own data files in the same path under your project:
+      # "assets/data/emoji/"
+      # emoji 数据文件名称, 默认是 "google.yml"
+      # ("apple.yml", "google.yml", "facebook.yml", "twitter.yml")
+      # 位于 "themes/DoIt/assets/data/emoji/" 目录
+      # 可以在你的项目下相同路径存放你自己的数据文件:
+      # "assets/data/emoji/"
+      emoji = ""
+
+    # Waline comment config (https://waline.js.org)
+    [page.comment.waline]
+      enable = false
+      serverURL = "https://waline-comment-doit.vercel.app/"
+      pageview = true
+      comment = true
+      # emoji = ['https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo']
+      # meta = ['nick', 'mail', 'link']
+      # requiredMeta = []
+      # login = 'enable'
+      # wordLimit = 0
+      # pageSize = 10
+      # imageUploader = false
+      # highlighter = false
+      # texRenderer = false
+
+    # Facebook comment config (https://developers.facebook.com/docs/plugins/comments)
+    [page.comment.facebook]
+      enable = false
+      width = "100%"
+      numPosts = 10
+      appId = ""
+      languageCode = ""
+
+    # Telegram comments config (https://comments.app/)
+    [page.comment.telegram]
+      enable = false
+      siteID = ""
+      limit = 5
+      height = ""
+      color = ""
+      colorful = true
+      dislikes = false
+      outlined = false
+      dark = false
+
+    # Commento comment config (https://commento.io/)
+    [page.comment.commento]
+      enable = false
+
+    # Utterances comment config (https://utteranc.es/)
+    [page.comment.utterances]
+      enable = false
+      # owner/repo
+      repo = "Hugo-DoIt/utterances-comments"
+      issueTerm = "pathname"
+      label = ""
+      lightTheme = "github-light"
+      darkTheme = "github-dark"
+
+    # Twikoo comment config (https://twikoo.js.org/)
+    [page.comment.twikoo]
+      enable = false
+      envId = "https://twikoo-comments-doit.vercel.app/"
+      region = ""
+      path = ""
+      cloudbase = true # boolean : true / false. # 是否部署在腾讯云 CloudBase
+      visitor = true
+      commentCount = true
+
+    # Vssue comment config (https://vssue.js.org//)
+    [page.comment.vssue]
+      enable = false
+      platform = "" # ("bitbucket", "gitea", "gitee", "github", "gitlab")
+      owner = ""
+      repo = ""
+      clientId = ""
+      clientSecret = ""
+
+    # Remark42 comment config (https://remark42.com/)
+    [page.comment.remark42]
+      enable = false
+      host = ""
+      site_id = ""
+      max_shown_comments = 15
+      show_email_subscription = true
+      simple_view = false
+
+    # giscus comment config (https://giscus.app/)
+    [page.comment.giscus]
+      enable = false
+      # owner/repo
+      dataRepo = ""
+      dataRepoId = ""
+      dataCategory = ""
+      dataCategoryId = ""
+      dataMapping = "pathname"
+      dataStrict = "0"
+      dataReactionsEnabled = "1"
+      dataEmitMetadata = "0"
+      dataInputPosition = "bottom"
+      lightTheme = "light"
+      darkTheme = "dark"
+      dataLang = "en"
+      dataLoading = "lazy"
+
+    # artalk comment config (https://artalk.js.org/guide/frontend/config.html)
+    [page.comment.artalk]
+      enable = false
+      server = ""
+      site = ""
+      lite = false
+      katex = false
+      lightbox = false
+      pageview = true
+      commentCount = true

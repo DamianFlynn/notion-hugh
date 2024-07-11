@@ -1,4 +1,12 @@
 baseURL = "https://damianflynn.github.io"  
 languageCode = "en-us"
-title = "My New Hugo Site"
+defaultContentLanguage = "en"
+
+title = "Incredible Technology, Incredibly Simple"
+description = "Streamlining the Digital Landscape with Cloud, DevOps, AI and Intelligent Buildings"
+keywords = ["Azure", "DevOps", "IaC", "AI"]
 theme = "DoIt"
+
+enableRobotsTXT = true
+enableGitInfo = true
+enableEmoji = true

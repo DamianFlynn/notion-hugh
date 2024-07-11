@@ -16,6 +16,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "server": "hugo server -D --disableFastRender --noHTTPCache",
+    "hugobuild": "hugo --cleanDestinationDir --verbose",
     "typecheck": "tsc --noEmit",
     "build": "tsc",
     "format": "prettier --write src/**/*.ts"
