@@ -14,12 +14,19 @@ export function getPageTitle(page: PageObjectResponse): string {
 }
 
 export function getPagePublishDate(page: PageObjectResponse): string {
-  const publishDate = page.properties["Publish Date"] ?? page.created_time;
-  if (publishDate.type === "date" && publishDate.date) {
-    return publishDate.date.start;
+  const publishDateProperty = page.properties["Publish Date"];
+
+  if (publishDateProperty && publishDateProperty.type === "date" && publishDateProperty.date) {
+    return publishDateProperty.date.start;
   }
+
+  // If publishDateProperty is not defined, use page.created_time
+  if (!publishDateProperty) {
+    return page.created_time;
+  }
+
   throw Error(
-    `page.properties.PublishDate has type ${publishDate.type} instead of date or is null. The underlying Notion API might have changed, please report an issue to the author.`
+    `page.properties["Publish Date"] has type ${publishDateProperty?.type} instead of date or is null. The underlying Notion API might have changed, please report an issue to the author.`
   );
 }
 
