@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Debug Typescript",
             "skipFiles": [
                 "<node_internals>/**"
             ],
@@ -16,7 +16,7 @@
                 "${workspaceFolder}/**/*.js"
             ],
             "env": {
-                "NOTION_TOKEN":"secret_P3QV0Y4yxhx683mWn9KrVX9mW6jHLDEXFu9vUjlCCbD"
+                "NOTION_TOKEN":"secret_efADHdPfNde1qCrQYxdUedEjf2IhUAT1jaOnsdUbqhV"
             }
         }
     ]
