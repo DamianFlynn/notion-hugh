@@ -1,17 +1,17 @@
 import fs from "fs-extra";
-import {
-  Client,
-  isFullUser,
-  iteratePaginatedAPI,
-} from "@notionhq/client";
-import {
-  PageObjectResponse,
-} from "@notionhq/client/build/src/api-endpoints";
+import { Client, isFullUser, iteratePaginatedAPI } from "@notionhq/client";
+import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionToMarkdown } from "./markdown/notion-to-md";
 import YAML from "yaml";
 import { sh } from "./sh";
 import { DatabaseMount, PageMount } from "./config";
-import { getPageTitle, getCoverLink, getFileName } from "./helpers";
+import {
+  getPageTitle,
+  getPagePublishDate,
+  getPageShouldBeProcessed,
+  getCoverLink,
+  getFileName,
+} from "./helpers";
 import { MdBlock } from "./markdown/types";
 import path from "path";
 import { getContentFile } from "./file";
@@ -54,12 +54,14 @@ export async function renderPage(page: PageObjectResponse, notion: Client) {
   const mdString = n2m.toMarkdownString(mdblocks);
   page.properties.Name;
   const title = getPageTitle(page);
+  const publishDate = getPagePublishDate(page);
   const frontMatter: Record<
     string,
     string | string[] | number | boolean | PageObjectResponse
   > = {
     title,
-    date: page.created_time,
+    date: publishDate,
+    // date: page.created_time,
     lastmod: page.last_edited_time,
     draft: false,
   };
@@ -176,6 +178,13 @@ export async function renderPage(page: PageObjectResponse, notion: Client) {
     }
   }
 
+  // set the page draft status
+  if (frontMatter.STATUS === "published") {
+    frontMatter.draft = false;
+  } else {
+    frontMatter.draft = true;
+  }
+
   // save metadata
   frontMatter.NOTION_METADATA = page;
 
@@ -204,28 +213,31 @@ export async function savePage(
   notion: Client,
   mount: DatabaseMount | PageMount,
 ) {
-  const postpath = path.join(
-    "content",
-    mount.target_folder,
-    getFileName(getPageTitle(page), page.id),
-  );
-  const post = getContentFile(postpath);
-  if (post) {
-    const metadata = post.metadata;
-    // if the page is not modified, continue
-    if (
-      post.expiry_time == null &&
-      metadata.last_edited_time === page.last_edited_time
-    ) {
-      console.info(`[Info] The post ${postpath} is up-to-date, skipped.`);
-      return;
+  if (getPageShouldBeProcessed(page)) {
+    const postpath = path.join(
+      "content",
+      mount.target_folder,
+      getFileName(getPageTitle(page), page.id),
+    );
+    const post = getContentFile(postpath);
+    if (post) {
+      const metadata = post.metadata;
+      // if the page is not modified, continue
+      if (
+        post.expiry_time == null &&
+        metadata.last_edited_time === page.last_edited_time
+      ) {
+        console.info(`[Info] The post ${postpath} is up-to-date, skipped.`);
+        return;
+      }
     }
-  }
-  // otherwise update the page
-  console.info(`[Info] Updating ${postpath}`);
+    // otherwise update the page
+    console.info(`[Info] Updating ${postpath}`);
 
-  const { title, pageString } = await renderPage(page, notion);
-  const fileName = getFileName(title, page.id);
-  await sh(`hugo new "${mount.target_folder}/${fileName}"`, false);
-  fs.writeFileSync(`content/${mount.target_folder}/${fileName}`, pageString);
+    const { title, pageString } = await renderPage(page, notion);
+
+    const fileName = getFileName(title, page.id);
+    await sh(`hugo new "${mount.target_folder}/${fileName}"`, false);
+    fs.writeFileSync(`content/${mount.target_folder}/${fileName}`, pageString);
+  }
 }

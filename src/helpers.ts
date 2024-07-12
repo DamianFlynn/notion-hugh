@@ -13,6 +13,37 @@ export function getPageTitle(page: PageObjectResponse): string {
   );
 }
 
+export function getPagePublishDate(page: PageObjectResponse): string {
+  const publishDate = page.properties["Publish Date"] ?? page.created_time;
+  if (publishDate.type === "date" && publishDate.date) {
+    return publishDate.date.start;
+  }
+  throw Error(
+    `page.properties.PublishDate has type ${publishDate.type} instead of date or is null. The underlying Notion API might have changed, please report an issue to the author.`
+  );
+}
+
+export function getPageShouldBeProcessed(page: PageObjectResponse): boolean {
+  const statusProperty = page.properties.Status;
+
+  // Check if the statusProperty is of the expected type
+  if (statusProperty.type === "status" && statusProperty.status) {
+    const statusName = statusProperty.status.name;
+    if (statusName !== "Published" && statusName !== "Draft") {
+      console.info(
+        `[Info] The post ${statusName} is not ready to be published, skipped.`
+      );
+      return false;
+    }
+    return true;
+  }
+
+  // If the statusProperty is not of the expected type, handle the error
+  throw Error(
+    `page.properties.Status has type ${statusProperty.type} instead of status. The underlying Notion API might have changed, please report an issue to the author.`
+  );
+}
+
 export async function getCoverLink(
   page_id: string,
   notion: Client
