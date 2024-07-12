@@ -179,7 +179,7 @@ export async function renderPage(page: PageObjectResponse, notion: Client) {
   }
 
   // set the page draft status
-  if (frontMatter.STATUS === "published") {
+  if (frontMatter.Status === "Published") {
     frontMatter.draft = false;
   } else {
     frontMatter.draft = true;

@@ -24,23 +24,30 @@ export function getPagePublishDate(page: PageObjectResponse): string {
 }
 
 export function getPageShouldBeProcessed(page: PageObjectResponse): boolean {
+  if (page.parent.type === 'page_id') {
+    console.info(
+      `[Info] The post ${getPageTitle(page)} is a child page, processing.`
+    );
+    return true;
+  }
+  // The page is a database page, lets check its publishing status
   const statusProperty = page.properties.Status;
-
-  // Check if the statusProperty is of the expected type
-  if (statusProperty.type === "status" && statusProperty.status) {
+  
+  // Check if statusProperty is defined
+  if (statusProperty && statusProperty.type === "status" && statusProperty.status) {
     const statusName = statusProperty.status.name;
     if (statusName !== "Published" && statusName !== "Draft") {
       console.info(
-        `[Info] The post ${statusName} is not ready to be published, skipped.`
+        `[Info] The post ${getPageTitle(page)} is not ready to be published, skipped.`
       );
       return false;
     }
     return true;
   }
 
-  // If the statusProperty is not of the expected type, handle the error
+  // If statusProperty is not defined or not of the expected type, handle the error
   throw Error(
-    `page.properties.Status has type ${statusProperty.type} instead of status. The underlying Notion API might have changed, please report an issue to the author.`
+    `page.properties.Status is undefined or has type ${statusProperty?.type} instead of status. The underlying Notion API might have changed, please report an issue to the author.`
   );
 }
 

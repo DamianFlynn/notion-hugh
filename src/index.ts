@@ -30,7 +30,7 @@ async function main() {
       if (!isFullPageOrDatabase(page) || page.object !== "page") {
         continue;
       }
-      console.info(`[Info] Start processing page ${page.id}`);
+      console.info(`[Info] Start processing database page ${page.id}`);
       page_ids.push(page.id);
       await savePage(page, notion, mount);
     }
@@ -40,6 +40,7 @@ async function main() {
   for (const mount of config.mount.pages) {
     const page = await notion.pages.retrieve({ page_id: mount.page_id });
     if (!isFullPage(page)) continue;
+    console.info(`[Info] Start processing child page ${page.id}`);
     page_ids.push(page.id);
     await savePage(page, notion, mount);
   }
