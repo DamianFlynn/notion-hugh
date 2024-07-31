@@ -8,7 +8,7 @@ import { exec } from "child_process";
 
 export async function sh(
   cmd: string,
-  panic: boolean = true
+  panic: boolean = true,
 ): Promise<{ stdout: string; stderr: string }> {
   return new Promise(function (resolve, reject) {
     exec(cmd, (err, stdout, stderr) => {

@@ -19,5 +19,5 @@ export type CalloutIcon =
   | null;
 
 export type CustomTransformer = (
-  block: GetBlockResponse
+  block: GetBlockResponse,
 ) => string | Promise<string>;

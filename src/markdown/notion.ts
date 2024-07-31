@@ -9,7 +9,7 @@ import { plainText } from "./md";
 export const getBlockChildren = async (
   notionClient: Client,
   block_id: string,
-  totalPage: number | null
+  totalPage: number | null,
 ) => {
   try {
     let results: GetBlockResponse[] = [];
@@ -44,7 +44,7 @@ export function getPageTitle(page: PageObjectResponse): string {
     return plainText(title.title);
   }
   throw Error(
-    `page.properties.Name has type ${title.type} instead of title. The underlying Notion API might has changed, please report an issue to the author.`
+    `page.properties.Name has type ${title.type} instead of title. The underlying Notion API might has changed, please report an issue to the author.`,
   );
 }
 
@@ -59,7 +59,7 @@ export function getFileName(title: any, page_id: any): string {
 
 export const getPageRelrefFromId = async (
   pageId: string,
-  notion: Client
+  notion: Client,
 ): Promise<{
   title: string;
   relref: string;
@@ -67,7 +67,7 @@ export const getPageRelrefFromId = async (
   const page = await notion.pages.retrieve({ page_id: pageId }); // throw if failed
   if (!isFullPage(page)) {
     throw Error(
-      `The pages.retrieve endpoint failed to return a full page for ${pageId}.`
+      `The pages.retrieve endpoint failed to return a full page for ${pageId}.`,
     );
   }
   const title = getPageTitle(page);

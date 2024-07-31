@@ -162,7 +162,7 @@ function equationRichText(text: EquationRichTextItemResponse): string {
 
 async function mentionRichText(
   text: MentionRichTextItemResponse,
-  notion: Client
+  notion: Client,
 ): Promise<string> {
   const mention = text.mention;
   switch (mention.type) {
@@ -207,7 +207,7 @@ async function mentionRichText(
 
 export async function richText(
   textArray: RichTextItemResponse[],
-  notion: Client
+  notion: Client,
 ) {
   return (
     await Promise.all(
@@ -219,7 +219,7 @@ export async function richText(
         } else if (text.type === "mention") {
           return await mentionRichText(text, notion);
         }
-      })
+      }),
     )
   ).join("");
 }
