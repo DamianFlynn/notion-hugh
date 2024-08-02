@@ -78,12 +78,11 @@ jobs:
     needs: build
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public  # Adjust this if your build directory is different
-          publish_branch: ${{ github.ref }}  # Deploy to the branch that triggered the action
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifact_name: github-pages
+          preview: ${{ github.ref != 'refs/heads/main' }}
 
       - name: Set environment for deployment
         if: github.ref == 'refs/heads/main'
