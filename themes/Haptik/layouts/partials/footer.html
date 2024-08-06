@@ -73,26 +73,20 @@
         <div class="flex-shrink-0 w-6/12 sm:w-4/12 pb-2">
           <p class="text-base font-bold mb-2">Various topics</p>
           <p class="text-sm leading-tight font-bold">
-            <a
-              href="hugo-go.html"
-              class="block text-primary-500 font-semibold hover:text-black hover:underline mb-1"
-              >Hugo - The worlds fastest static website engine</a
-            >
-            <a
-              href="tailwind-css.html"
-              class="block text-primary-500 font-semibold hover:text-black hover:underline mb-1"
-              >Tailwind CSS - my CSS framework of choice</a
-            >
-            <a
-              href="alpine-js.html"
-              class="block text-primary-500 font-semibold hover:text-black hover:underline mb-1"
-              >Alpine.js &ndash; like Tailwind CSS for JavaScript</a
-            >
-            <a
-              href="vue-js.html"
-              class="block text-primary-500 font-semibold hover:text-black hover:underline mb-1"
-              >VueJS javascript framework and why I love it</a
-            >
+
+{{ $allSeries := .Site.Taxonomies.series.ByCount }}
+{{ $latestSeries := first 4 $allSeries }}
+{{ range $series := $latestSeries }}
+  {{ $series_name := $series.Name }}
+  {{ $series_path := (printf "/series/%s" (urlize $series.Name)) }}
+  {{ $series_page := site.GetPage $series_path }}
+  {{ if $series_page }}
+  <a href="{{ $series_path | relLangURL }}" class="block text-primary-500 font-semibold hover:text-black hover:underline mb-1">    
+  {{ $series_page.Title }} ({{ $series.Count }})</a>
+  {{ end }}
+{{ end }}
+
+
           </p>
         </div>
       </div>

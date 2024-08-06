@@ -1,6 +1,6 @@
 ---
-title: "Ignite 2019"
-summary: "This is a brief summary of my series."
+title: "Building Azure with Code"
+summary: "Azure Developer Platform."
 logo: "path/to/logo.png"
 ---
 
