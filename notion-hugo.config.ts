@@ -3,8 +3,8 @@ import { UserConfig } from "./src/config"
 const userConfig: UserConfig = {
     mount: {
         manual: false,
-        // page_url: 'https://www.notion.so/Content-Management-252a519e13ee46c5b576691e1026e7e0',
-        page_url: 'https://www.notion.so/Notion-DoIt-b4a946f2fdf94cfebe1a425cd87582da',
+        page_url: 'https://www.notion.so/Content-Management-252a519e13ee46c5b576691e1026e7e0',
+        // page_url: 'https://www.notion.so/Notion-DoIt-b4a946f2fdf94cfebe1a425cd87582da',
         pages: [
             // {
             //     page_id: '<page_id>',
@@ -17,8 +17,8 @@ const userConfig: UserConfig = {
             // <page_id> is the page ID.
             {
                 // About Page
-                // page_id: '42464b089a234424a6396c013fa6cef6',
-                page_id: 'f0d707c254654346b1d7c49078ac74a7',
+                page_id: '42464b089a234424a6396c013fa6cef6',
+                // page_id: 'f0d707c254654346b1d7c49078ac74a7',
                 target_folder: '.'
             }
         ],
@@ -34,8 +34,8 @@ const userConfig: UserConfig = {
             // <long_hash_1> is the database ID and <long_hash_2> is the view ID.
             {
                 // Notion 'Posts' Database
-                // database_id: '4bb8f075358d4efeb575192baa1d62b9',
-                database_id: '68e960d6f53043819afb6df687714cab',
+                database_id: '4bb8f075358d4efeb575192baa1d62b9',
+                // database_id: '68e960d6f53043819afb6df687714cab',
                 target_folder: '.'
             }
         ],

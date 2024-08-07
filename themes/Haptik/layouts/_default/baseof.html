@@ -54,7 +54,10 @@
           ]
         }
     </script>
-      
+    {{ $debugInfo := printf "Page Title: %s\nPage URL: %s\nPage Type: %s" .Title .Permalink .Type }}
+<script>
+  console.log('{{ $debugInfo | safeJS }}');
+</script>
 </body>
 
 </html>
