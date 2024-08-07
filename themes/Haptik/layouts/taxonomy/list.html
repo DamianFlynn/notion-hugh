@@ -34,7 +34,7 @@
               {{- $taxonomy := .Data.Singular -}}
               {{- if eq $taxonomy "category" -}}
               <li class="flex items-center text-secondary-500">
-                <a href="/catagories" class="flex items-center text-primary-500 py-1">
+                <a href="/categories" class="flex items-center text-primary-500 py-1">
                   <div class="h-4 w-4">
                     <svg class="w-full h-full" fill="currentcolor" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="m15 0h525.355a15 15 0 0115 15v38.555a15 15 0 01-15 15H15a15 15 0 01-15-15V15a15 15 0 0115-15z" transform="matrix(-.5 .8660254 -.8660254 -.5 424.048 32.277)"></path></svg>
                   </div>
@@ -104,12 +104,18 @@
                 {{- end -}}
               {{- else -}}
               <li class="flex items-center text-secondary-500">
-                <a href="/authors" class="flex items-center text-primary-500 py-1">
+                <a href="/{{ $taxonomy }}" class="flex items-center text-primary-500 py-1">
                   <div class="h-4 w-4">
                     <svg class="w-full h-full" fill="currentcolor" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="m15 0h525.355a15 15 0 0115 15v38.555a15 15 0 01-15 15H15a15 15 0 01-15-15V15a15 15 0 0115-15z" transform="matrix(-.5 .8660254 -.8660254 -.5 424.048 32.277)"></path></svg>
                   </div>
-                  <span class="px-1 py-1">{{- printf "%v - %v" (T $taxonomy | default $taxonomy) .Title -}}</span>
+                  <span class="px-1 py-1">{{ $taxonomy | humanize }}</span>
                 </a>
+              </li>
+              <li class="flex items-center text-secondary-500">
+                <div class="h-4 w-4">
+                  <svg class="w-full h-full" fill="currentcolor" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="m15 0h525.355a15 15 0 0115 15v38.555a15 15 0 01-15 15H15a15 15 0 01-15-15V15a15 15 0 0115-15z" transform="matrix(-.5 .8660254 -.8660254 -.5 424.048 32.277)"></path></svg>
+                </div>
+                {{ partial "plugin/fontawesome.html" (dict "Style" "regular" "Icon" "folder-open") }}<span class="px-1 py-1">{{ .Title }}</span>
               </li>
               {{- end -}}  
 
@@ -174,33 +180,36 @@
               {{- range .Paginator.Pages -}}
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-12 my-12">
                 <div class="flex-center h-40 shadow-glow bg-gradient-radius to-blue-100 border border-blue-100 rounded-xl p-4">
-                  <img src="images/lightweight-state-management-for-alpinejs-lightweight-state-management-for-alpine-js.svg" alt class="h-full object-contain"/>
+                  {{ if .Params.featuredImage }}
+                  {{- /* Featured image */ -}}
+                  {{- $image := .Params.featuredImage -}}
+                  {{- with $image -}}
+                      {{- $optim := slice 
+                              (dict "Process" "resize 800x webp q75" "descriptor" "800w")
+                              (dict "Process" "resize 1200x webp q75" "descriptor" "1200w")
+                              (dict "Process" "resize 1600x webp q75" "descriptor" "1600w") 
+                          -}}
+                          {{- dict "Src" . "OptimConfig" $optim "Class" "h-full object-contain" | partial "plugin/image.html" -}}
+                  {{- end -}}   
+                  {{ else }}
+                  <img src="/images/img-catagory-undefined.png" alt class="h-full object-contain" />
+                  {{ end}}
                 </div>
                 <div class="col-span-2 -mt-4">
                   <div class="text-md font-bold text-secondary-500">
-                    December 2020
+                    {{- $.Site.Params.list.dateFormat | default "01-02" | .Date.Format -}}
                   </div>
                   <h2 class="text-3xl font-bold text-primary-500 leading-tense mb-2">
-                    <a href="lightweight-state-management-for-alpinejs.html">
-                      How to get access to data from different AlpineJS
-                      components
+                    <a href="{{ .RelPermalink }}">
+                      {{- .Title -}}
                     </a>
                   </h2>
                   <div class="text-base leading-relaxed">
-                    In this article you will find two answers to this question and
-                    one of them feels right. So dive into the details and get things
-                    done the lean way.
+                    {{ if .Params.summary }}{{- .Params.summary -}}{{ else }}{{ if in .Content "<!--more-->" }}
+              {{- .Summary -}}{{ else }}{{- .Summary | truncate 250 -}}{{ end }}{{ end }}
                   </div>
                 </div>
-              </div>
-          
-                      <a href="{{ .RelPermalink }}" class="archive-item-link">
-                          {{- .Title -}}
-                      </a>
-                      <span class="archive-item-date">
-                          {{- $.Site.Params.dateFormat | default "2006-01-02" | .Date.Format -}}
-                      </span>
-                  
+              </div>        
               {{- end -}}
           {{- else -}}
               {{- range .Paginator.PageGroups -}}

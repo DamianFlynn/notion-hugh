@@ -35,7 +35,7 @@
               <div class="h-4 w-4">
                 <svg class="w-full h-full" fill="currentcolor" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="m15 0h525.355a15 15 0 0115 15v38.555a15 15 0 01-15 15H15a15 15 0 01-15-15V15a15 15 0 0115-15z" transform="matrix(-.5 .8660254 -.8660254 -.5 424.048 32.277)"></path></svg>
               </div>
-              {{ partial "plugin/fontawesome.html" (dict "Style" "regular" "Icon" "folder-open") }}<span class="px-1 py-1">{{ .Title }}</span>
+              <span class="px-1 py-1">{{ partial "plugin/fontawesome.html" (dict "Style" "regular" "Icon" "folder-open") }}{{ .Title }}</span>
             </li>
             {{- else if eq $taxonomy "tag" -}}
 
@@ -98,7 +98,7 @@
         {{- if .Content -}}
           {{- dict "Content" .Content "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" | safeHTML -}}
         {{- end -}}
-        /layout/taxonomy/list.html .Content
+        /layout/taxonomy/terms.html .Content
         </p>
 
         {{- /* Article Count */ -}}
