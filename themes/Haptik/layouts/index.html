@@ -52,7 +52,6 @@
               {{- range first 2 .Paginator.Pages -}}
                 {{- .Render "summary" -}}
               {{- end -}}
-              {{- partial "paginator.html" . -}}
           {{- end -}}
           </div>
           {{- /* Posts */ -}}
@@ -62,11 +61,11 @@
               {{- range after 2 (first 5 .Paginator.Pages) -}}
                 {{- .Render "summary-wide" -}}
               {{- end -}}
-              {{- partial "paginator.html" . -}}
+
           {{- end -}}
           <div class="w-full xl:w-5/6 mx-auto text-center my-12">
             <a
-              href="/blog/#more_articles"
+            href="/posts"
               class="inline-flex-center px-8 py-2 bg-primary-500 text-white border-2 border-primary-500 text-sm font-bold rounded-lg shadow-lg"
               >More articles</a
             >

@@ -21,7 +21,26 @@
   <div class="relative w-full max-w-screen-2xl mx-auto px-12 xl:pl-40 xl:pr-40 pt-12 lg:pt-24 pb-32 isolate">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-y-4 lg:gap-12 2xl:-mr-24 2xl:-ml-24">
       <div class="flex-center shadow-glow rounded-xl overflow-hidden max-h-80 lg:max-h-full">
-        <img src="/blog/navigating-the-future-of-conversational-design/technology-art-conversational-design_hu6f8508c4c6b7c09cfc27866b86025ff7_1091714_856x0_resize_q25_h1_lanczos_3.webp" alt="" class="w-full h-full object-cover">
+      {{- /* Featured Post */ -}}
+      {{- $featuredPosts := where .Pages "Params.featured" true -}}  <!-- Get all featured posts -->
+      {{- $recentFeaturedPost := first 1 (sort $featuredPosts "Date" "desc") -}}  <!-- Sort by date and get the most recent -->
+      {{- if $recentFeaturedPost -}}  <!-- Check if there is a recent featured post -->
+      {{- $post := index $recentFeaturedPost 0 -}}  <!-- Get the first (most recent) post -->
+
+      {{ if $post.Params.featuredImage }}
+      {{- /* Featured image */ -}}
+      {{- $image := $post.Params.featuredImage -}}
+      {{- with $image -}}
+          {{- $optim := slice 
+                  (dict "Process" "resize 800x webp q75" "descriptor" "800w")
+                  (dict "Process" "resize 1200x webp q75" "descriptor" "1200w")
+                  (dict "Process" "resize 1600x webp q75" "descriptor" "1600w") 
+              -}}
+              {{- dict "Src" . "OptimConfig" $optim "Class" "h-full object-contain" | partial "plugin/image.html" -}}
+      {{- end -}}   
+      {{ else }}
+      <img src="/images/img-catagory-undefined.png" alt class="h-full object-contain" />
+      {{ end}}
       </div>
       <div class="col-span-2 break-hyphen">
         <nav aria-label="breadcrumb">
@@ -38,22 +57,31 @@
               <div class="h-4 w-4">
                 <svg class="w-full h-full" fill="currentcolor" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="m15 0h525.355a15 15 0 0115 15v38.555a15 15 0 01-15 15H15a15 15 0 01-15-15V15a15 15 0 0115-15z" transform="matrix(-.5 .8660254 -.8660254 -.5 424.048 32.277)"></path></svg>
               </div>
-              <span class="px-1 py-1">Articles [{{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" -}}]</span>
+              <span class="px-1 py-1">{{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" -}}</span>
             </li>
           </ol>
         </nav>
-        <div class="text-xl text-secondary-500 font-bold">February 2024</div>
+
+        <div class="text-xl text-secondary-500 font-bold">{{- $.Site.Params.section.dateFormat | default "01-02" | $post.Date.Format -}}</div>
         <h2 class="block text-5xl leading-none text-primary-500 break-words font-bold mb-2">
-          <a href="/blog/navigating-the-future-of-conversational-design/">Conversational Design - The Art of Conversation</a>
+          <a href="{{ $post.Permalink }}">{{ $post.Title }}</a>
         </h2>
-        <div class="text-xl leading-relaxed mb-6">Dive into conversational design, where tech talks back, understanding emotions and intentions. Join the future of engaging, proactive dialogue.</div>
-        <div class="flex flex-wrap items-center -ml-2 mb-4">
-          <a href="/topics/conversationalai/" class="flex items-center text-xs uppercase text-primary-500 font-bold m-2">
-            <span class="h-5 w-5 mr-1">
-              <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentcolor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512.0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828.0l-7-7A1.994 1.994.0 013 12V7a4 4 0 014-4z"></path></svg>
-            </span>Conversationalai
-          </a>
+        <div class="text-xl leading-relaxed mb-6">
+          {{ if $post.Summary }}{{- $post.Summary -}}{{ else }}{{ if in $post.Content "<!--more-->" }}
+              {{- $post.Summary -}}{{ else }}{{- $post.Summary | truncate 250 -}}{{ end }}{{ end }}
         </div>
+        <div class="flex flex-wrap items-center -ml-2 mb-4">
+          {{- with $post.Params.tags -}}
+          {{- range $index, $value := . -}}
+              {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+              <a href="{{ $tag.RelPermalink }}" class="flex items-center text-xs uppercase text-primary-500 font-bold m-2">
+                <span class="h-5 w-5 mr-1"><svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentcolor" >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512.0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828.0l-7-7A1.994 1.994.0 013 12V7a4 4 0 014-4z"></path>
+              </svg> </span>{{- $tag.Title -}}</a>
+          {{- end -}}
+          {{- end -}}
+        </div>
+        {{- end -}}
       </div>
     </div>
   </div>
@@ -83,12 +111,11 @@
         </ol>
       </nav>
       <h2 class="block text-5xl leading-none text-secondary-500 break-words font-bold mb-2">
-        Articles [
         {{- if (gt .Paginator.PageNumber 1) -}}
         {{ $pageNumber := printf "%v %v %v" (T "prefixPageNumber" ) .Paginator.PageNumber (T "suffixPageNumber" ) }}
-        {{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" }}] Page {{ $pageNumber }} / {{ .Paginator.TotalPages }}
+        {{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" }} - {{ $pageNumber }} / {{ .Paginator.TotalPages }}
         {{- else -}}
-        {{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" }}]
+        {{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" }}
         {{- end -}}
       </h2>
       <p class="text-xl text-secondary-500 leading-relaxed mb-6">
